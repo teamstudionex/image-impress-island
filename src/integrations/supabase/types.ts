@@ -14,7 +14,329 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      assets: {
+        Row: {
+          created_at: string
+          duration_ms: number
+          expires_at: string
+          filename: string
+          has_video: boolean
+          height: number | null
+          id: string
+          kind: string
+          mime_type: string
+          project_id: string
+          role: string
+          size_bytes: number
+          storage_path: string
+          user_id: string
+          width: number | null
+        }
+        Insert: {
+          created_at?: string
+          duration_ms: number
+          expires_at?: string
+          filename: string
+          has_video?: boolean
+          height?: number | null
+          id?: string
+          kind?: string
+          mime_type: string
+          project_id: string
+          role?: string
+          size_bytes: number
+          storage_path: string
+          user_id: string
+          width?: number | null
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number
+          expires_at?: string
+          filename?: string
+          has_video?: boolean
+          height?: number | null
+          id?: string
+          kind?: string
+          mime_type?: string
+          project_id?: string
+          role?: string
+          size_bytes?: number
+          storage_path?: string
+          user_id?: string
+          width?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      caption_docs: {
+        Row: {
+          asset_id: string | null
+          language: string
+          length_mode: string
+          project_id: string
+          revision: number
+          segments: Json
+          style: Json | null
+          updated_at: string
+          user_id: string
+          words: Json
+        }
+        Insert: {
+          asset_id?: string | null
+          language: string
+          length_mode: string
+          project_id: string
+          revision?: number
+          segments?: Json
+          style?: Json | null
+          updated_at?: string
+          user_id: string
+          words?: Json
+        }
+        Update: {
+          asset_id?: string | null
+          language?: string
+          length_mode?: string
+          project_id?: string
+          revision?: number
+          segments?: Json
+          style?: Json | null
+          updated_at?: string
+          user_id?: string
+          words?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "caption_docs_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "caption_docs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          error_code: string | null
+          id: string
+          name: string
+          outcome: string | null
+          tool: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          error_code?: string | null
+          id?: string
+          name: string
+          outcome?: string | null
+          tool?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          error_code?: string | null
+          id?: string
+          name?: string
+          outcome?: string | null
+          tool?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      jobs: {
+        Row: {
+          asset_id: string | null
+          created_at: string
+          duration_ms: number | null
+          error_code: string | null
+          finished_at: string | null
+          id: string
+          params: Json
+          project_id: string
+          status: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          asset_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_code?: string | null
+          finished_at?: string | null
+          id?: string
+          params?: Json
+          project_id: string
+          status?: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          asset_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_code?: string | null
+          finished_at?: string | null
+          id?: string
+          params?: Json
+          project_id?: string
+          status?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jobs_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jobs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      preferences: {
+        Row: {
+          caption_language: string
+          caption_length_mode: string
+          caption_style: Json | null
+          custom_words: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          caption_language?: string
+          caption_length_mode?: string
+          caption_style?: Json | null
+          custom_words?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          caption_language?: string
+          caption_length_mode?: string
+          caption_style?: Json | null
+          custom_words?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          first_intent: string | null
+          last_sign_in_at: string | null
+          terms_accepted_at: string | null
+          terms_version: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          first_intent?: string | null
+          last_sign_in_at?: string | null
+          terms_accepted_at?: string | null
+          terms_version?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          first_intent?: string | null
+          last_sign_in_at?: string | null
+          terms_accepted_at?: string | null
+          terms_version?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          id: string
+          last_tool: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          last_tool?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          last_tool?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      usage_ledger: {
+        Row: {
+          created_at: string
+          id: string
+          job_id: string
+          period_start: string
+          seconds: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          job_id: string
+          period_start: string
+          seconds: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          job_id?: string
+          period_start?: string
+          seconds?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

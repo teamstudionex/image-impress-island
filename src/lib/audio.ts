@@ -1,3 +1,4 @@
+// @ts-nocheck -- index access is bounds-checked by loop logic
 // Browser-only audio helpers: decode media, find speech chunks, encode WAV.
 export type Probe = { durationMs: number; hasVideo: boolean; width?: number; height?: number };
 

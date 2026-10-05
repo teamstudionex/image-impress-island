@@ -58,8 +58,8 @@ export async function transcribeWav(wavBase64: string, language?: string): Promi
   let deltas = "";
   let final: string | null = null;
   await readSSE(res, (e) => {
-    if (e.type === "transcript.text.delta" && typeof e.delta === "string") deltas += e.delta;
-    if (e.type === "transcript.text.done" && typeof e.text === "string") final = e.text;
+    if (e["type"] === "transcript.text.delta" && typeof e["delta"] === "string") deltas += e["delta"];
+    if (e["type"] === "transcript.text.done" && typeof e["text"] === "string") final = e["text"];
   });
   return (final ?? deltas).trim();
 }
@@ -89,7 +89,7 @@ export async function toHinglish(lines: string[]): Promise<string[]> {
   }
   let text = "";
   await readSSE(res, (e) => {
-    if (e.type === "response.output_text.delta" && typeof e.delta === "string") text += e.delta;
+    if (e["type"] === "response.output_text.delta" && typeof e["delta"] === "string") text += e["delta"];
   });
   const m = text.match(/\[[\s\S]*\]/);
   if (!m) throw new ProviderError("PROCESSING_FAILED", 200);

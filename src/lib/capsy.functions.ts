@@ -167,7 +167,7 @@ export const finishTranscription = createServerFn({ method: "POST" })
     const elapsed = Date.now() - new Date(job.created_at).getTime();
     if (data.outcome !== "succeeded") {
       await a.from("jobs").update({ status: data.outcome, error_code: data.errorCode ?? null, finished_at: finished, duration_ms: elapsed }).eq("id", job.id);
-      if (data.outcome === "failed") await logEvent({ user_id: context.userId, name: "job_failed", tool: "captions", error_code: data.errorCode });
+      if (data.outcome === "failed") await logEvent({ user_id: context.userId, name: "job_failed", tool: "captions", ...(data.errorCode ? { error_code: data.errorCode } : {}) });
       return { ok: true };
     }
     const params = job.params as { language: string; lengthMode: string };

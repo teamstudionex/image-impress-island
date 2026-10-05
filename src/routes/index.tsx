@@ -147,7 +147,7 @@ function Home() {
         <section id="faq" className="mx-auto max-w-3xl scroll-mt-24 px-6 py-16">
           <h2 className="text-3xl font-semibold tracking-tight">Questions</h2>
           <Accordion type="single" collapsible className="glass mt-8 px-6">
-            {faq.map(([q, a]) => (
+            {faq.map(([q = "", a]) => (
               <AccordionItem key={q} value={q}>
                 <AccordionTrigger>{q}</AccordionTrigger>
                 <AccordionContent className="text-muted-foreground">{a}</AccordionContent>

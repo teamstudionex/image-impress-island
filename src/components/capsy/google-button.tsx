@@ -2,7 +2,7 @@ import { useState } from "react";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 
-export function GoogleButton({ intent, requireAgree }: { intent?: string; requireAgree?: boolean }) {
+export function GoogleButton({ intent, requireAgree }: { intent?: string | undefined; requireAgree?: boolean }) {
   const [error, setError] = useState<string | null>(null);
   async function go() {
     setError(null);

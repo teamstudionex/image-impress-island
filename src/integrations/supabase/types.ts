@@ -29,6 +29,7 @@ export type Database = {
           role: string
           size_bytes: number
           storage_path: string
+          upload_status: string
           user_id: string
           width: number | null
         }
@@ -46,6 +47,7 @@ export type Database = {
           role?: string
           size_bytes: number
           storage_path: string
+          upload_status?: string
           user_id: string
           width?: number | null
         }
@@ -63,6 +65,7 @@ export type Database = {
           role?: string
           size_bytes?: number
           storage_path?: string
+          upload_status?: string
           user_id?: string
           width?: number | null
         }
@@ -169,12 +172,18 @@ export type Database = {
           created_at: string
           duration_ms: number | null
           error_code: string | null
+          error_message: string | null
           finished_at: string | null
           id: string
+          output_id: string | null
           params: Json
+          progress: number
           project_id: string
+          retry_of: string | null
+          started_at: string | null
           status: string
           type: string
+          updated_at: string
           user_id: string
         }
         Insert: {
@@ -182,12 +191,18 @@ export type Database = {
           created_at?: string
           duration_ms?: number | null
           error_code?: string | null
+          error_message?: string | null
           finished_at?: string | null
           id?: string
+          output_id?: string | null
           params?: Json
+          progress?: number
           project_id: string
+          retry_of?: string | null
+          started_at?: string | null
           status?: string
           type: string
+          updated_at?: string
           user_id: string
         }
         Update: {
@@ -195,12 +210,18 @@ export type Database = {
           created_at?: string
           duration_ms?: number | null
           error_code?: string | null
+          error_message?: string | null
           finished_at?: string | null
           id?: string
+          output_id?: string | null
           params?: Json
+          progress?: number
           project_id?: string
+          retry_of?: string | null
+          started_at?: string | null
           status?: string
           type?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: [
@@ -212,10 +233,94 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "jobs_output_id_fkey"
+            columns: ["output_id"]
+            isOneToOne: false
+            referencedRelation: "outputs"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "jobs_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jobs_retry_of_fkey"
+            columns: ["retry_of"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      outputs: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          filename: string
+          id: string
+          job_id: string | null
+          kind: string
+          metadata: Json
+          mime_type: string | null
+          project_id: string
+          size_bytes: number | null
+          source_asset_id: string | null
+          storage_path: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          filename: string
+          id?: string
+          job_id?: string | null
+          kind: string
+          metadata?: Json
+          mime_type?: string | null
+          project_id: string
+          size_bytes?: number | null
+          source_asset_id?: string | null
+          storage_path?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          filename?: string
+          id?: string
+          job_id?: string | null
+          kind?: string
+          metadata?: Json
+          mime_type?: string | null
+          project_id?: string
+          size_bytes?: number | null
+          source_asset_id?: string | null
+          storage_path?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outputs_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outputs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outputs_source_asset_id_fkey"
+            columns: ["source_asset_id"]
+            isOneToOne: false
+            referencedRelation: "assets"
             referencedColumns: ["id"]
           },
         ]
@@ -280,6 +385,7 @@ export type Database = {
       projects: {
         Row: {
           created_at: string
+          description: string | null
           duration_ms: number | null
           id: string
           last_tool: string | null
@@ -290,6 +396,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          description?: string | null
           duration_ms?: number | null
           id?: string
           last_tool?: string | null
@@ -300,6 +407,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          description?: string | null
           duration_ms?: number | null
           id?: string
           last_tool?: string | null

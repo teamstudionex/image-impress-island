@@ -136,35 +136,49 @@ export type Database = {
       events: {
         Row: {
           created_at: string
+          detail: string | null
           duration_ms: number | null
           error_code: string | null
           id: string
           name: string
           outcome: string | null
+          project_id: string | null
           tool: string | null
           user_id: string | null
         }
         Insert: {
           created_at?: string
+          detail?: string | null
           duration_ms?: number | null
           error_code?: string | null
           id?: string
           name: string
           outcome?: string | null
+          project_id?: string | null
           tool?: string | null
           user_id?: string | null
         }
         Update: {
           created_at?: string
+          detail?: string | null
           duration_ms?: number | null
           error_code?: string | null
           id?: string
           name?: string
           outcome?: string | null
+          project_id?: string | null
           tool?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "events_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       jobs: {
         Row: {
@@ -179,7 +193,10 @@ export type Database = {
           params: Json
           progress: number
           project_id: string
+          provider: string | null
+          provider_job_id: string | null
           retry_of: string | null
+          stage: string | null
           started_at: string | null
           status: string
           type: string
@@ -198,7 +215,10 @@ export type Database = {
           params?: Json
           progress?: number
           project_id: string
+          provider?: string | null
+          provider_job_id?: string | null
           retry_of?: string | null
+          stage?: string | null
           started_at?: string | null
           status?: string
           type: string
@@ -217,7 +237,10 @@ export type Database = {
           params?: Json
           progress?: number
           project_id?: string
+          provider?: string | null
+          provider_job_id?: string | null
           retry_of?: string | null
+          stage?: string | null
           started_at?: string | null
           status?: string
           type?: string

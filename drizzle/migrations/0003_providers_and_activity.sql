@@ -1,0 +1,15 @@
+ALTER TABLE public.jobs ADD COLUMN IF NOT EXISTS provider text, ADD COLUMN IF NOT EXISTS provider_job_id text, ADD COLUMN IF NOT EXISTS stage text;
+ALTER TABLE public.events ADD COLUMN IF NOT EXISTS project_id uuid REFERENCES public.projects(id) ON DELETE CASCADE, ADD COLUMN IF NOT EXISTS detail text;
+CREATE INDEX IF NOT EXISTS events_project_idx ON public.events(project_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS jobs_project_idx ON public.jobs(project_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS assets_project_idx ON public.assets(project_id);
+CREATE INDEX IF NOT EXISTS outputs_project_idx ON public.outputs(project_id, created_at DESC);
+GRANT SELECT ON public.events TO authenticated;
+GRANT ALL ON public.events TO service_role;
+DROP POLICY IF EXISTS "own events select" ON public.events;
+CREATE POLICY "own events select" ON public.events FOR SELECT TO authenticated USING (auth.uid() = user_id);
+ALTER TABLE public.jobs DROP CONSTRAINT IF EXISTS jobs_asset_id_fkey, ADD CONSTRAINT jobs_asset_id_fkey FOREIGN KEY (asset_id) REFERENCES public.assets(id) ON DELETE SET NULL;
+ALTER TABLE public.jobs DROP CONSTRAINT IF EXISTS jobs_output_id_fkey, ADD CONSTRAINT jobs_output_id_fkey FOREIGN KEY (output_id) REFERENCES public.outputs(id) ON DELETE SET NULL;
+ALTER TABLE public.outputs DROP CONSTRAINT IF EXISTS outputs_source_asset_id_fkey, ADD CONSTRAINT outputs_source_asset_id_fkey FOREIGN KEY (source_asset_id) REFERENCES public.assets(id) ON DELETE SET NULL;
+ALTER TABLE public.outputs DROP CONSTRAINT IF EXISTS outputs_job_id_fkey, ADD CONSTRAINT outputs_job_id_fkey FOREIGN KEY (job_id) REFERENCES public.jobs(id) ON DELETE SET NULL;
+ALTER TABLE public.caption_docs DROP CONSTRAINT IF EXISTS caption_docs_asset_id_fkey, ADD CONSTRAINT caption_docs_asset_id_fkey FOREIGN KEY (asset_id) REFERENCES public.assets(id) ON DELETE SET NULL;
